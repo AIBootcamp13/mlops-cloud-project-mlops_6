@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Poster Gallery</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .header {
+            text-align: center;
+            padding: 2rem 0;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+
+        .gallery-container {
+            padding: 2rem 0;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .poster-slider {
+            display: flex;
+            gap: 1rem;
+            /* JavaScript로 제어하므로 CSS 애니메이션 제거 */
+            transition: none;
+            will-change: transform;
+        }
+
+        .poster-card {
+            flex: 0 0 auto;
+            width: 200px;
+            height: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .poster-card:hover {
+            transform: scale(1.05) translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        }
+
+        .poster-card img {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .poster-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .poster-info {
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.8);
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .poster-title {
+            font-size: 0.9rem;
+            font-weight: bold;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .controls {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .control-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            margin: 0 0.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .control-btn.active {
+            background: rgba(255, 255, 255, 0.4);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .poster-card {
+                width: 150px;
+                height: 225px;
+            }
+            
+            .poster-card img {
+                height: 180px;
+            }
+            
+            .poster-info {
+                height: 45px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎬 Movie Poster Gallery</h1>
+        <p>Perfect seamless circular scrolling</p>
+    </div>
+
+    <div class="controls">
+        <button class="control-btn" id="pauseBtn" onclick="toggleAnimation()">⏸️ Pause</button>
+        <button class="control-btn" onclick="changeSpeed('slow')">🐌 Slow</button>
+        <button class="control-btn active" onclick="changeSpeed('normal')">🚶 Normal</button>
+        <button class="control-btn" onclick="changeSpeed('fast')">🏃 Fast</button>
+        <button class="control-btn" onclick="reverseDirection()">🔄 Reverse</button>
+    </div>
+
+    <div class="gallery-container">
+        <div class="poster-slider" id="posterSlider">
+            <!-- 원본 20개 포스터 -->
+            {% for movie in movies %}
+            <div class="poster-card" onclick="showMovieInfo('{{ movie.title }}')">
+                <img src="{{ movie.poster }}" alt="{{ movie.title }}" loading="lazy">
+                <div class="poster-info">
+                    <div class="poster-title">{{ movie.title }}</div>
+                </div>
+            </div>
+            {% endfor %}
+            
+            <!-- 완벽한 원형 스크롤을 위한 복제본 -->
+            {% for movie in movies %}
+            <div class="poster-card" onclick="showMovieInfo('{{ movie.title }}')">
+                <img src="{{ movie.poster }}" alt="{{ movie.title }}" loading="lazy">
+                <div class="poster-info">
+                    <div class="poster-title">{{ movie.title }}</div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        class SeamlessSlider {
+            constructor() {
+                this.slider = document.getElementById('posterSlider');
+                this.posterWidth = 200; // CSS에서 설정한 포스터 너비
+                this.gap = 16; // 1rem = 16px
+                this.totalPosters = 20;
+                
+                // 정확한 한 세트의 너비 계산 (검색 결과 분석 적용)
+                this.singleSetWidth = (this.posterWidth + this.gap) * this.totalPosters;
+                
+                this.currentPosition = 0;
+                this.speed = 1; // 기본 속도
+                this.direction = 1; // 1: 정방향, -1: 역방향
+                this.isPlaying = true;
+                this.isPaused = false;
+                this.animationId = null;
+                
+                this.init();
+            }
+            
+            init() {
+                this.startAnimation();
+                this.setupEventListeners();
+            }
+            
+            startAnimation() {
+                const animate = () => {
+                    if (this.isPlaying && !this.isPaused) {
+                        // 연속적인 스크롤 (끊김 없음)
+                        this.currentPosition += this.speed * this.direction;
+                        
+                        // 한 세트가 완전히 지나가면 위치 리셋 (시각적으로 끊김 없음)
+                        if (this.direction === 1 && this.currentPosition >= this.singleSetWidth) {
+                            this.currentPosition = 0;
+                        } else if (this.direction === -1 && this.currentPosition <= -this.singleSetWidth) {
+                            this.currentPosition = 0;
+                        }
+                        
+                        this.slider.style.transform = `translateX(-${this.currentPosition}px)`;
+                    }
+                    
+                    this.animationId = requestAnimationFrame(animate);
+                };
+                
+                animate();
+            }
+            
+            setupEventListeners() {
+                this.slider.addEventListener('mouseenter', () => {
+                    this.isPaused = true;
+                });
+                
+                this.slider.addEventListener('mouseleave', () => {
+                    this.isPaused = false;
+                });
+            }
+            
+            toggleAnimation() {
+                this.isPlaying = !this.isPlaying;
+                const pauseBtn = document.getElementById('pauseBtn');
+                
+                if (this.isPlaying) {
+                    pauseBtn.innerHTML = '⏸️ Pause';
+                    pauseBtn.classList.remove('active');
+                } else {
+                    pauseBtn.innerHTML = '▶️ Play';
+                    pauseBtn.classList.add('active');
+                }
+            }
+            
+            changeSpeed(speedType) {
+                const speedMap = {
+                    'slow': 0.5,
+                    'normal': 1,
+                    'fast': 2
+                };
+                
+                this.speed = speedMap[speedType];
+                
+                // 버튼 활성화 상태 업데이트
+                document.querySelectorAll('.control-btn').forEach(btn => {
+                    if (btn.textContent.includes('Slow') || 
+                        btn.textContent.includes('Normal') || 
+                        btn.textContent.includes('Fast')) {
+                        btn.classList.remove('active');
+                    }
+                });
+                
+                event.target.classList.add('active');
+            }
+            
+            reverseDirection() {
+                this.direction *= -1;
+                const reverseBtn = event.target;
+                
+                if (this.direction === -1) {
+                    reverseBtn.innerHTML = '🔄 Forward';
+                    reverseBtn.classList.add('active');
+                } else {
+                    reverseBtn.innerHTML = '🔄 Reverse';
+                    reverseBtn.classList.remove('active');
+                }
+            }
+        }
+        
+        // 슬라이더 인스턴스 생성
+        const seamlessSlider = new SeamlessSlider();
+        
+        // 전역 함수들
+        function toggleAnimation() {
+            seamlessSlider.toggleAnimation();
+        }
+        
+        function changeSpeed(speed) {
+            seamlessSlider.changeSpeed(speed);
+        }
+        
+        function reverseDirection() {
+            seamlessSlider.reverseDirection();
+        }
+        
+        function showMovieInfo(title) {
+            alert(`🎬 ${title}\n\n완벽한 원형 스크롤에서 선택된 영화입니다!`);
+        }
+        
+        // 페이지 가시성 변경 시 애니메이션 제어
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                seamlessSlider.isPaused = true;
+            } else {
+                seamlessSlider.isPaused = false;
+            }
+        });
+    </script>
+</body>
+</html>

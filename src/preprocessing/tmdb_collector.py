@@ -13,7 +13,7 @@ class TMDBCollector:
         """
         api_key: TMDB 개인 API Key
         """
-        self.api_key = '34001fe64b18a059b394f98a65974226'
+        self.api_key = ''
         self.base_url = "https://api.themoviedb.org/3"
         self.session = requests.Session()  # HTTP 세션 재사용 (속도 및 연결 효율 개선)
 

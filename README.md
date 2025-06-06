@@ -36,7 +36,6 @@
 
 ## 📁 프로젝트 구조
 ```
-```
 ├── airflow/                    # Airflow 관련 파일
 │   └── dags/                   # Airflow DAGs
 │        └── pipeline.py        # 워크플로 제어 DAGs
@@ -59,8 +58,6 @@
 ├── requirements.txt            # 라이브러리 설치파일
 └── README.md                   # 프로젝트 README
 ```
-```
-
 <br>
 
 ## 💻​ 구현 기능

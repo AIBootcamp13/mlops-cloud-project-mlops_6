@@ -44,9 +44,12 @@
         .poster-slider {
             display: flex;
             gap: 1rem;
-            /* JavaScript로 제어하므로 CSS 애니메이션 제거 */
-            transition: none;
-            will-change: transform;
+            /* 원형 스크롤을 위한 무한 애니메이션 */
+            animation: infiniteScroll 40s linear infinite;
+        }
+
+        .poster-slider.paused {
+            animation-play-state: paused;
         }
 
         .poster-card {
@@ -92,6 +95,16 @@
             line-height: 1.2;
         }
 
+        /* 원형 스크롤 애니메이션 - 끊김 없는 무한 루프 */
+        @keyframes infiniteScroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%); /* 복제본의 절반만큼 이동 */
+            }
+        }
+
         .controls {
             text-align: center;
             margin: 2rem 0;
@@ -120,30 +133,276 @@
             border-color: rgba(255, 255, 255, 0.6);
         }
 
+        /* 속도별 애니메이션 클래스 */
+        .speed-slow {
+            animation-duration: 80s !important;
+        }
+
+        .speed-normal {
+            animation-duration: 40s !important;
+        }
+
+        .speed-fast {
+            animation-duration: 20s !important;
+        }
+
+        /* 상세 정보 모달 */
+        .movie-detail-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .movie-detail-content {
+            background: linear-gradient(135deg, #2a3a5c 0%, #3a4a7c 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            display: flex;
+            gap: 2rem;
+            position: relative;
+        }
+
+        .movie-poster-large {
+            flex: 0 0 300px;
+            height: 450px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .movie-poster-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .movie-info-detail {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .movie-title-large {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .movie-overview {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #e0e0e0;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .movie-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .meta-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+        }
+
+        .meta-label {
+            font-size: 0.9rem;
+            color: #b0b0b0;
+            margin-bottom: 0.5rem;
+        }
+
+        .meta-value {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .cast-crew-section {
+            margin-top: 1rem;
+        }
+
+        .cast-crew-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #ffd700;
+        }
+
+        .cast-crew-content {
+            font-size: 1rem;
+            line-height: 1.4;
+            color: #e0e0e0;
+            max-height: 100px;
+            overflow-y: auto;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
         @media (max-width: 768px) {
-            .header h1 {
+            .movie-detail-content {
+                flex-direction: column;
+                padding: 1.5rem;
+            }
+            
+            .movie-poster-large {
+                flex: none;
+                width: 100%;
+                height: 300px;
+            }
+            
+            .movie-meta {
+                grid-template-columns: 1fr;
+            }
+            
+            .movie-title-large {
                 font-size: 2rem;
             }
-            
-            .poster-card {
-                width: 150px;
-                height: 225px;
+        }
+
+        /* 팡파레 애니메이션 효과 */
+        @keyframes fanfare {
+            0% { 
+                transform: scale(1) rotate(0deg);
+                background: rgba(255, 255, 255, 0.1);
+                box-shadow: 0 0 0 rgba(255, 215, 0, 0);
             }
-            
-            .poster-card img {
-                height: 180px;
+            25% { 
+                transform: scale(1.2) rotate(5deg);
+                background: linear-gradient(45deg, #ffd700, #ffed4e);
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
             }
-            
-            .poster-info {
-                height: 45px;
+            50% { 
+                transform: scale(1.3) rotate(-5deg);
+                background: linear-gradient(45deg, #ffed4e, #ffd700);
+                box-shadow: 0 0 30px rgba(255, 215, 0, 1);
+            }
+            75% { 
+                transform: scale(1.1) rotate(3deg);
+                background: linear-gradient(45deg, #ffd700, #ffed4e);
+                box-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
+            }
+            100% { 
+                transform: scale(1) rotate(0deg);
+                background: linear-gradient(45deg, #ffd700, #ffed4e);
+                box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
             }
         }
+
+        /* 반짝이는 효과 */
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        /* 팡파레 클래스 */
+        .fanfare-animation {
+            animation: fanfare 1.5s ease-in-out;
+            position: relative;
+            overflow: visible;
+        }
+
+        /* 반짝이는 파티클 효과 */
+        .fanfare-animation::before,
+        .fanfare-animation::after {
+            content: "✨";
+            position: absolute;
+            font-size: 1.5rem;
+            animation: sparkle 0.8s infinite;
+            pointer-events: none;
+        }
+
+        .fanfare-animation::before {
+            top: -10px;
+            left: -10px;
+            animation-delay: 0.2s;
+        }
+
+        .fanfare-animation::after {
+            top: -10px;
+            right: -10px;
+            animation-delay: 0.5s;
+        }
+
+        /* 하이라이트 유지 */
+        .highlighted {
+            background: linear-gradient(45deg, #ffd700, #ffed4e) !important;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.6) !important;
+            border: 2px solid #ffd700 !important;
+            color: #000 !important;
+            font-weight: bold !important;
+        }
+
+        /* 로딩 펄스 효과 */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+
+        .loading-pulse {
+            animation: pulse 1s infinite;
+            background: linear-gradient(45deg, #4a90e2, #7bb3f0);
+        }
+
+        /* 파티클 떠오르는 효과 */
+        @keyframes particleFloat {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1) rotate(0deg);
+            }
+            50% {
+                opacity: 0.8;
+                transform: translateY(-30px) scale(1.2) rotate(180deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-60px) scale(0.5) rotate(360deg);
+            }
+        }
+
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>🎬 Movie Poster Gallery</h1>
-        <p>Perfect seamless circular scrolling</p>
+        <h1>🎬 영화 평점 예측 서비스</h1>
+        <p>포스터를 클릭하면 상세정보를 볼수있습니다.</p>
     </div>
 
     <div class="controls">
@@ -155,11 +414,11 @@
     </div>
 
     <div class="gallery-container">
-        <div class="poster-slider" id="posterSlider">
-            <!-- 원본 20개 포스터 -->
+        <div class="poster-slider speed-normal" id="posterSlider">
+            <!-- 원본 포스터들 -->
             {% for movie in movies %}
-            <div class="poster-card" onclick="showMovieInfo('{{ movie.title }}')">
-                <img src="{{ movie.poster }}" alt="{{ movie.title }}" loading="lazy">
+            <div class="poster-card" onclick="showMovieInfo({{ movie.id }})">
+                <img src="{{ movie.poster_path }}" alt="{{ movie.title }}" loading="lazy">
                 <div class="poster-info">
                     <div class="poster-title">{{ movie.title }}</div>
                 </div>
@@ -168,8 +427,8 @@
             
             <!-- 완벽한 원형 스크롤을 위한 복제본 -->
             {% for movie in movies %}
-            <div class="poster-card" onclick="showMovieInfo('{{ movie.title }}')">
-                <img src="{{ movie.poster }}" alt="{{ movie.title }}" loading="lazy">
+            <div class="poster-card" onclick="showMovieInfo({{ movie.id }})">
+                <img src="{{ movie.poster_path }}" alt="{{ movie.title }}" loading="lazy">
                 <div class="poster-info">
                     <div class="poster-title">{{ movie.title }}</div>
                 </div>
@@ -178,138 +437,289 @@
         </div>
     </div>
 
+    <!-- 영화 상세 정보 모달 -->
+    <div class="movie-detail-modal" id="movieModal">
+        <div class="movie-detail-content">
+            <button class="close-modal" onclick="closeModal()">×</button>
+            <div class="movie-poster-large">
+                <img id="modalPoster" src="" alt="">
+            </div>
+            <div class="movie-info-detail">
+                <h2 class="movie-title-large" id="modalTitle"></h2>
+                <div class="movie-overview" id="modalOverview"></div>
+                
+                <div class="movie-meta">
+                    <div class="meta-item">
+                        <div class="meta-label">개봉일</div>
+                        <div class="meta-value" id="modalReleaseDate"></div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">상영시간</div>
+                        <div class="meta-value" id="modalRuntime"></div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">평점</div>
+                        <div class="meta-value" id="modalVoteAverage"></div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">예상평점</div>
+                        <div class="meta-value" id="modalPredictedRating">계산 중...</div>
+                    </div>
+                </div>
+                
+                <div class="cast-crew-section">
+                    <div class="cast-crew-title">주요 출연진</div>
+                    <div class="cast-crew-content" id="modalCast"></div>
+                </div>
+                
+                <div class="cast-crew-section">
+                    <div class="cast-crew-title">제작진</div>
+                    <div class="cast-crew-content" id="modalCrew"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        class SeamlessSlider {
-            constructor() {
-                this.slider = document.getElementById('posterSlider');
-                this.posterWidth = 200; // CSS에서 설정한 포스터 너비
-                this.gap = 16; // 1rem = 16px
-                this.totalPosters = 20;
-                
-                // 정확한 한 세트의 너비 계산 (검색 결과 분석 적용)
-                this.singleSetWidth = (this.posterWidth + this.gap) * this.totalPosters;
-                
-                this.currentPosition = 0;
-                this.speed = 1; // 기본 속도
-                this.direction = 1; // 1: 정방향, -1: 역방향
-                this.isPlaying = true;
-                this.isPaused = false;
-                this.animationId = null;
-                
-                this.init();
-            }
-            
-            init() {
-                this.startAnimation();
-                this.setupEventListeners();
-            }
-            
-            startAnimation() {
-                const animate = () => {
-                    if (this.isPlaying && !this.isPaused) {
-                        // 연속적인 스크롤 (끊김 없음)
-                        this.currentPosition += this.speed * this.direction;
-                        
-                        // 한 세트가 완전히 지나가면 위치 리셋 (시각적으로 끊김 없음)
-                        if (this.direction === 1 && this.currentPosition >= this.singleSetWidth) {
-                            this.currentPosition = 0;
-                        } else if (this.direction === -1 && this.currentPosition <= -this.singleSetWidth) {
-                            this.currentPosition = 0;
-                        }
-                        
-                        this.slider.style.transform = `translateX(-${this.currentPosition}px)`;
-                    }
-                    
-                    this.animationId = requestAnimationFrame(animate);
-                };
-                
-                animate();
-            }
-            
-            setupEventListeners() {
-                this.slider.addEventListener('mouseenter', () => {
-                    this.isPaused = true;
-                });
-                
-                this.slider.addEventListener('mouseleave', () => {
-                    this.isPaused = false;
-                });
-            }
-            
-            toggleAnimation() {
-                this.isPlaying = !this.isPlaying;
-                const pauseBtn = document.getElementById('pauseBtn');
-                
-                if (this.isPlaying) {
-                    pauseBtn.innerHTML = '⏸️ Pause';
-                    pauseBtn.classList.remove('active');
-                } else {
-                    pauseBtn.innerHTML = '▶️ Play';
-                    pauseBtn.classList.add('active');
-                }
-            }
-            
-            changeSpeed(speedType) {
-                const speedMap = {
-                    'slow': 0.5,
-                    'normal': 1,
-                    'fast': 2
-                };
-                
-                this.speed = speedMap[speedType];
-                
-                // 버튼 활성화 상태 업데이트
-                document.querySelectorAll('.control-btn').forEach(btn => {
-                    if (btn.textContent.includes('Slow') || 
-                        btn.textContent.includes('Normal') || 
-                        btn.textContent.includes('Fast')) {
-                        btn.classList.remove('active');
-                    }
-                });
-                
-                event.target.classList.add('active');
-            }
-            
-            reverseDirection() {
-                this.direction *= -1;
-                const reverseBtn = event.target;
-                
-                if (this.direction === -1) {
-                    reverseBtn.innerHTML = '🔄 Forward';
-                    reverseBtn.classList.add('active');
-                } else {
-                    reverseBtn.innerHTML = '🔄 Reverse';
-                    reverseBtn.classList.remove('active');
-                }
-            }
-        }
+        // 영화 데이터
+        const moviesData = {{ movies | tojson }};
         
-        // 슬라이더 인스턴스 생성
-        const seamlessSlider = new SeamlessSlider();
+        let isPlaying = true;
+        let isReversed = false;
         
-        // 전역 함수들
         function toggleAnimation() {
-            seamlessSlider.toggleAnimation();
+            const slider = document.getElementById('posterSlider');
+            const pauseBtn = document.getElementById('pauseBtn');
+            
+            isPlaying = !isPlaying;
+            
+            if (isPlaying) {
+                slider.classList.remove('paused');
+                pauseBtn.innerHTML = '⏸️ Pause';
+                pauseBtn.classList.remove('active');
+            } else {
+                slider.classList.add('paused');
+                pauseBtn.innerHTML = '▶️ Play';
+                pauseBtn.classList.add('active');
+            }
         }
         
         function changeSpeed(speed) {
-            seamlessSlider.changeSpeed(speed);
+            const slider = document.getElementById('posterSlider');
+            
+            // 기존 속도 클래스 제거
+            slider.classList.remove('speed-slow', 'speed-normal', 'speed-fast');
+            
+            // 새로운 속도 클래스 추가
+            slider.classList.add(`speed-${speed}`);
+            
+            // 버튼 활성화 상태 업데이트
+            document.querySelectorAll('.control-btn').forEach(btn => {
+                if (btn.textContent.includes('Slow') || 
+                    btn.textContent.includes('Normal') || 
+                    btn.textContent.includes('Fast')) {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            event.target.classList.add('active');
         }
         
         function reverseDirection() {
-            seamlessSlider.reverseDirection();
+            const slider = document.getElementById('posterSlider');
+            isReversed = !isReversed;
+            
+            if (isReversed) {
+                slider.style.animationDirection = 'reverse';
+                event.target.innerHTML = '🔄 Forward';
+                event.target.classList.add('active');
+            } else {
+                slider.style.animationDirection = 'normal';
+                event.target.innerHTML = '🔄 Reverse';
+                event.target.classList.remove('active');
+            }
         }
         
-        function showMovieInfo(title) {
-            alert(`🎬 ${title}\n\n완벽한 원형 스크롤에서 선택된 영화입니다!`);
+
+        // FastAPI 호출 공통 함수 (검색 결과 참고)
+        const callFastAPI = async (operation, url, params) => {
+            const method = operation.toUpperCase();
+            const contentType = 'application/json';
+            let requestUrl = url;
+            
+            const options = {
+                method: method,
+                headers: {
+                    'Content-Type': contentType
+                }
+            };
+            
+            if (method === 'GET') {
+                requestUrl += '?' + new URLSearchParams(params);
+            } else {
+                options.body = JSON.stringify(params);
+            }
+            
+            try {
+                const response = await fetch(requestUrl, options);
+                const data = await response.json();
+                
+                if (response.status >= 200 && response.status < 300) {
+                    return { success: true, data: data };
+                } else {
+                    return { success: false, error: data };
+                }
+            } catch (error) {
+                return { success: false, error: error.message };
+            }
+        };
+
+        // 수정된 showMovieInfo 함수
+        async function showMovieInfo(movieId) {
+            const movie = moviesData.find(m => m.id === movieId);
+            if (!movie) return;
+            
+            // 모달 기본 정보 설정
+            document.getElementById('modalPoster').src = movie.poster_path;
+            document.getElementById('modalTitle').textContent = movie.title;
+            document.getElementById('modalOverview').textContent = movie.overview || '줄거리 정보가 없습니다.';
+            document.getElementById('modalReleaseDate').textContent = movie.release_date;
+            document.getElementById('modalRuntime').textContent = `${movie.runtime}분`;
+            document.getElementById('modalVoteAverage').textContent = `⭐ ${movie.vote_average}/10`;
+            document.getElementById('modalCast').textContent = movie.cast || '출연진 정보가 없습니다.';
+            document.getElementById('modalCrew').textContent = movie.crew || '제작진 정보가 없습니다.';
+            
+            // 예상평점 필드 초기화 및 로딩 효과
+            const predictionElement = document.getElementById('modalPredictedRating');
+            predictionElement.innerHTML = '<span class="loading-pulse">🔮 AI 예측 중...</span>';
+            predictionElement.className = 'meta-value loading-pulse';
+            
+            // 모달 표시
+            document.getElementById('movieModal').style.display = 'flex';
+            
+            // FastAPI 예상평점 호출
+            try {
+                const predictParams = {
+                    id: parseInt(movie.id),
+                    title: String(movie.title),
+                    genres: movie.genres || null,
+                    keywords: movie.keywords || null,
+                    cast: movie.cast || null,
+                    crew: movie.crew || null,
+                    release_date: movie.release_date || null,
+                    runtime: movie.runtime ? parseInt(movie.runtime) : null,
+                    vote_count: movie.vote_count ? parseInt(movie.vote_count) : null,
+                    popularity: movie.popularity ? parseFloat(movie.popularity) : null
+                };
+                
+                const result = await callFastAPI('POST', '/predict', predictParams);
+                
+                if (result.success) {
+                    const predictedRating = result.data.predicted_rating;
+                    
+                    // 팡파레 효과와 함께 결과 표시
+                    showPredictionWithFanfare(predictionElement, predictedRating);
+                } else {
+                    console.error('Prediction API Error:', result.error);
+                    predictionElement.innerHTML = '❌ <small>예측 실패</small>';
+                    predictionElement.className = 'meta-value';
+                }
+            } catch (error) {
+                console.error('Prediction Error:', error);
+                predictionElement.innerHTML = '❌ <small>예측 오류</small>';
+                predictionElement.className = 'meta-value';
+            }
         }
+
+        // 팡파레 효과와 함께 예측 결과 표시
+        function showPredictionWithFanfare(element, rating) {
+            // 로딩 효과 제거
+            element.classList.remove('loading-pulse');
+            
+            // 팡파레 애니메이션 시작
+            element.classList.add('fanfare-animation');
+            
+            // 결과 텍스트 설정 (약간의 지연으로 더 드라마틱하게)
+            setTimeout(() => {
+                element.innerHTML = `🏆 ${rating.toFixed(1)}/10 ⭐`;
+            }, 300);
+            
+            // 애니메이션 완료 후 하이라이트 유지
+            setTimeout(() => {
+                element.classList.remove('fanfare-animation');
+                element.classList.add('highlighted');
+                
+                // 추가 파티클 효과
+                createParticleEffect(element);
+            }, 1500);
+        }
+
+        // 파티클 효과 생성
+        function createParticleEffect(element) {
+            const particles = ['🎉', '🎊', '⭐', '✨', '🏆'];
+            
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.textContent = particles[Math.floor(Math.random() * particles.length)];
+                    particle.style.cssText = `
+                        position: absolute;
+                        font-size: 1.2rem;
+                        pointer-events: none;
+                        z-index: 1001;
+                        animation: particleFloat 2s ease-out forwards;
+                        top: ${element.getBoundingClientRect().top + window.scrollY}px;
+                        left: ${element.getBoundingClientRect().left + Math.random() * element.offsetWidth}px;
+                    `;
+                    
+                    document.body.appendChild(particle);
+                    
+                    // 파티클 제거
+                    setTimeout(() => {
+                        if (particle.parentNode) {
+                            particle.parentNode.removeChild(particle);
+                        }
+                    }, 2000);
+                }, i * 100);
+            }
+        }        
+        
+        function closeModal() {
+            document.getElementById('movieModal').style.display = 'none';
+        }
+        
+        // 마우스 호버 시 애니메이션 일시정지
+        const slider = document.getElementById('posterSlider');
+        slider.addEventListener('mouseenter', () => {
+            slider.classList.add('paused');
+        });
+        
+        slider.addEventListener('mouseleave', () => {
+            if (isPlaying) {
+                slider.classList.remove('paused');
+            }
+        });
+        
+        // 모달 외부 클릭 시 닫기
+        document.getElementById('movieModal').addEventListener('click', (e) => {
+            if (e.target.id === 'movieModal') {
+                closeModal();
+            }
+        });
+        
+        // ESC 키로 모달 닫기
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
         
         // 페이지 가시성 변경 시 애니메이션 제어
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
-                seamlessSlider.isPaused = true;
-            } else {
-                seamlessSlider.isPaused = false;
+                slider.classList.add('paused');
+            } else if (isPlaying) {
+                slider.classList.remove('paused');
             }
         });
     </script>

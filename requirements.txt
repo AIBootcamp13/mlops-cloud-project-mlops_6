@@ -1,0 +1,14 @@
+# requirements.txt
+numpy
+pandas
+koreanize-matplotlib
+python-dotenv
+fire
+wandb
+icecream
+tqdm
+lightgbm
+scikit-learn
+boto3
+joblib
+pydantic

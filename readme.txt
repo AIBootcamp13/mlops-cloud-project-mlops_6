@@ -3,3 +3,8 @@
 3. echo -e "AIRFLOW_UID=$(id -u)" > .env
 4. docker-compose up airflow-init
 5. docker compose up --build -d
+
+6. 깃허브 파일 복사  pipeline.py =>   /dags
+   깃허브 파일 복사  src/*  => /dags
+   깃허브 파일 복사  fastapi_app/* => fastapi_app/  
+   

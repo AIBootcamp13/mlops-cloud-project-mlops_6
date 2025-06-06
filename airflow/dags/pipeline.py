@@ -107,12 +107,12 @@ def train(key: str, bucket_name: str, local_filename: str, model_name: str, num_
 
     upload_to_minio(**param)
 
-    try:
+    """ try:
         os.remove(filename)
     except FileNotFoundError:
         print(f"{filename} 파일이 없습니다.")
     except OSError as e:
-        print(f"오류: {filename} : {e.strerror}")
+        print(f"오류: {filename} : {e.strerror}") """
 
 
 def print_msg() ->None:
@@ -128,7 +128,7 @@ default_args = {
 }
 
 with DAG(
-    dag_id='data_workflow_v20',
+    dag_id='data_workflow_v21',
     default_args=default_args,
     description='데이터 생성/가공 모델 학습/배포 파이프라인',
     schedule_interval="0 0 * * *",

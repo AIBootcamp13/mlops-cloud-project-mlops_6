@@ -1,0 +1,10 @@
+text
+# Dockerfile.fastapi
+FROM tiangolo/uvicorn-gunicorn-fastapi:python3.9
+
+# requirements.txt 복사 및 설치
+COPY requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
+
+# 애플리케이션 코드 복사
+# COPY ./fastapi_app /app

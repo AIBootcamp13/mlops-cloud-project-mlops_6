@@ -86,4 +86,5 @@
 <br>
 
 ## 📰​ 참고자료
-- _참고자료를 첨부해주세요_
+- [Airflow Tutorial for Beginners - Full Course in 2 Hours 2022](https://www.youtube.com/watch?v=K9AnJ9_ZAXE&list=PLwFJcsJ61oujAqYpMp1kdUBcPG0sE0QMT)
+  with https://www.perplexity.ai(Claude 4.0 Sonnet)

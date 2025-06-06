@@ -36,18 +36,29 @@
 
 ## 📁 프로젝트 구조
 ```
-├── code
-│   ├── jupyter_notebooks
-│   │   └── model_train.ipynb
-│   └── train.py
-├── docs
-│   ├── pdf
-│   │   └── (Template) [패스트캠퍼스] Upstage AI Lab 1기_그룹 스터디 .pptx
-│   └── paper
-└── input
-    └── data
-        ├── eval
-        └── train
+```
+├── airflow/                    # Airflow 관련 파일
+│   └── dags/                   # Airflow DAGs
+│        └── pipeline.py        # 워크플로 제어 DAGs
+├── src/                        # 프로세스 
+│   ├── dataset/                # 데이터셋 관련 패키지
+│   ├── inference/              # 평가 관련 패키지
+│   ├── model/                  # 모델 관련 패키지
+│   ├── preprocessing/          # 데이터 수집/전처리 관련 패키지
+│   └── utils/                  # 유틸리티 패키지
+├── fastapi_app/                # 프론트단
+│   ├── templates/              # html 파일 패키지
+│   └── main.py                 # web api
+├── .env                        # 환경 변수
+├── .dockerignore               # Docker ignore 파일
+├── .gitignore                  # Git ignore 파일
+├── docker-compose.yml          # Docker Compose file
+├── Dockerfile                  # 메인 도커파일
+├── Dockerfiil.fastapi          # fastapi 용 도커파일
+├── readme.txt                  # 설치 설명서
+├── requirements.txt            # 라이브러리 설치파일
+└── README.md                   # 프로젝트 README
+```
 ```
 
 <br>

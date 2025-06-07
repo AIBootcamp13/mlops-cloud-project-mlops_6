@@ -1,8 +1,9 @@
 ## 💻 프로젝트 소개
+
 ### 🎬 영화 평점 예측 서비스
 - 영화 포스터와 메타데이터를 활용하여 AI 기반 평점 예측 서비스를 제공하는 영화 추천 플랫폼입니다. 사용자가 포스터를 클릭하면 영화의 상세 정보와 함께 머신러닝 모델이 예측한 평점을 실시간으로 확인할 수 있습니다. 장르, 출연진, 제작진, 개봉일 등의 다양한 영화 메타데이터를 FastAPI로 처리하여 정확한 평점 예측을 제공하며, 직관적인 갤러리 인터페이스로 영화 탐색 경험을 향상시킵니다.
   
-### <프로젝트 목표>
+### 🎯 프로젝트 목표
 
 - MLOps 자동화를 통한 영화 평점 예측 서비스 개발
 - TMDB API를 호출하여 데이터 수집및 갱신
@@ -95,4 +96,4 @@
 
 ## 📰​ 참고자료
 - [Airflow Tutorial for Beginners - Full Course in 2 Hours 2022](https://www.youtube.com/watch?v=K9AnJ9_ZAXE&list=PLwFJcsJ61oujAqYpMp1kdUBcPG0sE0QMT)
-- [with https://www.perplexity.ai //Claude 4.0 Sonnet]
+- [https://www.perplexity.ai](https://www.perplexity.ai)

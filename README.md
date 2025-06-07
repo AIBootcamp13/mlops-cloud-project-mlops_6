@@ -16,7 +16,7 @@
 
 ## 👨‍👩‍👦‍👦 팀 구성원
 
-| ![박패캠](https://avatars.githubusercontent.com/u/156163982?v=4) | ![이패캠](https://avatars.githubusercontent.com/u/156163982?v=4) | ![최패캠](https://avatars.githubusercontent.com/u/156163982?v=4) | ![김패캠](https://avatars.githubusercontent.com/u/156163982?v=4) | ![오패캠](https://avatars.githubusercontent.com/u/156163982?v=4) |
+| ![박패캠](https://avatars.githubusercontent.com/u/156163982?v=4) | ![이패캠](https://avatars.githubusercontent.com/u/156163982?v=4) | ![최패캠](https://avatars.githubusercontent.com/u/156163982?v=4) | ![김패캠](https://avatars.githubusercontent.com/u/156163982?v=4) |
 | :--------------------------------------------------------------: | :--------------------------------------------------------------: | :--------------------------------------------------------------: | :--------------------------------------------------------------: |
 |            [김두환](https://github.com/UpstageAILab)             |            [소재목](https://github.com/UpstageAILab)             |            [나주영](https://github.com/UpstageAILab)             |            [김재훈](https://github.com/UpstageAILab)             |
 |                            팀장 및 MLOps 총괄                             |                            모델링 방향 논의                             |                            자료 정리 및 발표                             |                            분석 흐름 검토                             |

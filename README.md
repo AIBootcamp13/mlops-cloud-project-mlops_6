@@ -18,8 +18,8 @@
 
 | ![박패캠](https://avatars.githubusercontent.com/u/156163982?v=4) | ![이패캠](https://avatars.githubusercontent.com/u/156163982?v=4) | ![최패캠](https://avatars.githubusercontent.com/u/156163982?v=4) | ![김패캠](https://avatars.githubusercontent.com/u/156163982?v=4) | ![오패캠](https://avatars.githubusercontent.com/u/156163982?v=4) |
 | :--------------------------------------------------------------: | :--------------------------------------------------------------: | :--------------------------------------------------------------: | :--------------------------------------------------------------: | :--------------------------------------------------------------: |
-|            [이상준](https://github.com/UpstageAILab)             |            [김두환](https://github.com/UpstageAILab)             |            [소재목](https://github.com/UpstageAILab)             |            [나주영](https://github.com/UpstageAILab)             |            [김재훈](https://github.com/UpstageAILab)             |
-|                            팀장, 담당 역할                             |                            담당 역할                             |                            담당 역할                             |                            담당 역할                             |                            담당 역할                             |
+|            [김두환](https://github.com/UpstageAILab)             |            [소재목](https://github.com/UpstageAILab)             |            [나주영](https://github.com/UpstageAILab)             |            [김재훈](https://github.com/UpstageAILab)             |
+|                            팀장 및 MLOps 총괄                             |                            모델링 방향 논의                             |                            자료 정리 및 발표                             |                            분석 흐름 검토                             |
 
 <br>
 
@@ -62,18 +62,36 @@
 <br>
 
 ## 💻​ 구현 기능
-### 기능1
-- _작품에 대한 주요 기능을 작성해주세요_
-### 기능2
-- _작품에 대한 주요 기능을 작성해주세요_
-### 기능3
-- _작품에 대한 주요 기능을 작성해주세요_
+### 데이터 수집 및 자동화
+- _TMDB API를 활용하여 영화 데이터 수집_
+- _Airflow DAG를 통해 주기적으로 데이터를 크롤링 및 수집 수행하게 설정_
+- _수집된 데이터를 MinIO에 저장하여 모델 학습 및 API 호출에 사용_
+### 영화 평점 예측 모델 학습 및 제공
+- _수집된 데이터를 전처리하고 모델 학습 수행_
+- _모델은 입력된 데이터를 기반으로 평점을 예측_
+- _학습된 모델은 MinIO에 저장되며 FastAPI를 통해 REST API로 배포됨_
+### 실시간 API 기반 예측 서비
+- _FastAPI 서버를 통해 /predict 엔드포인트 제공_
+- _외부 요청이 들어오면 MinIO에서 예측 결과 반환_
+- _HTML 기반의 갤러리 UI로 사용자 인터랙션 제공_
 
 <br>
 
 ## 🛠️ 작품 아키텍처(필수X)
 - #### _아래 이미지는 예시입니다_
-![이미지 설명](https://miro.medium.com/v2/resize:fit:4800/format:webp/1*ub_u88a4MB5Uj-9Eb60VNA.jpeg)
+[TMDB API]
+    ↓ (Airflow DAG)
+[데이터 수집 스크립트]
+    ↓
+[MinIO - 원본 데이터 저장]
+    ↓ (Airflow DAG 또는 CLI)
+[모델 학습 코드 (src/ 내부)]
+    ↓
+[학습된 모델 → MinIO 저장]
+    ↓
+[FastAPI 서버 - main.py]
+    ↓
+[사용자 요청 → /predict → 모델 로드 → 예측 → 응답 반환]
 
 <br>
 
